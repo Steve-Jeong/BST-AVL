@@ -22,13 +22,13 @@ typedef struct Node {
 typedef Node *Tree;
 
 /**
- * getNode returns a new node.
+ * createNode returns a new node.
  * @return a new node
  */
-Node *getNode() {
+Node *createNode() {
   return new Node();
 }
-Node *getNode(int newkey) {
+Node *createNode(int newkey) {
   return new Node(newkey);
 }
 
@@ -69,17 +69,17 @@ int height(Node* T){
 }
 
 // node의 개수를 알려주는 함수
-int noNodes(Node* T){
+int numNodes(Node* T){
   int count=0;
 
   if( T != NULL ){
-    count = 1 + noNodes(T->left)+noNodes(T->right);
+    count = 1 + numNodes(T->left)+numNodes(T->right);
   }
   return count;
 }
 
 // tree에서 최소값을 갖는 노드를 알려주는 함수
-Node* minNodes(Node* T){
+Node* minNode(Node* T){
   Node* tmp_t = T;
   while(tmp_t->left !=NULL){
     tmp_t = tmp_t->left;
@@ -88,7 +88,7 @@ Node* minNodes(Node* T){
 }
 
 // tree에서 최댓값을 갖는 노드를 알려주는 함수
-Node* maxNodes(Node* T){
+Node* maxNode(Node* T){
   Node* tmp_t = T;
   while(tmp_t->right !=NULL){
     tmp_t = tmp_t->right;
@@ -174,7 +174,7 @@ Node *insertBST(Tree *T, int newKey) {
     if(newKey < tmp_t->data) tmp_t = tmp_t->left;
     else tmp_t = tmp_t->right;
   }
-  newNode = getNode();
+  newNode = createNode();
   if(T == NULL){
     T = newNode;
   }else if(newKey < q->data){
@@ -202,7 +202,7 @@ void insertAVL(Tree *T, int newKey) {
     T = new Node(newKey);
   }
   T = insertBST(T, newKey);
-  Node *tmp_key = getNode();
+  Node *tmp_key = createNode();
   updateBF(T, tmp_key, );
   balance(T);  // bf에 따라 노드 재정
 }
@@ -238,8 +238,8 @@ Node *deleteBST(Tree *T, int deleteKey) {
   else if((p->left == NULL) || (p->right == NULL)){
       if(p->left != NULL){
         if(q==NULL){
-          if(noNodes(p->left)!=1){
-            p->data = maxNodes(p->left)->data;
+          if(numNodes(p->left)!=1){
+            p->data = maxNode(p->left)->data;
             deleteBST(p->left, p->data);
           }else{p->data = p->left->data; p->left = NULL;}
         }
@@ -249,8 +249,8 @@ Node *deleteBST(Tree *T, int deleteKey) {
         }
       }else{
         if(q==NULL){
-          if(noNodes(p->right)!=1){
-            p->data = minNodes(p->right)->data;
+          if(numNodes(p->right)!=1){
+            p->data = minNode(p->right)->data;
             deleteBST(p->right,p->right->data);
           }else{p->data = p->right->data; p->right = NULL;}
         }
@@ -264,18 +264,18 @@ Node *deleteBST(Tree *T, int deleteKey) {
   else if((p->left != NULL) && (p->right != NULL)){
     //왼쪽 트리가 더 큰 경우
     if(height(p->left) > height(p->right)){
-      tmp = maxNodes(p->left); flag =0;
+      tmp = maxNode(p->left); flag =0;
     }
     //오른쪽 트리가 더 큰 경우
     else if(height(p->left) < height(p->right)){
-      tmp = minNodes(p->right); flag = 1;
+      tmp = minNode(p->right); flag = 1;
     }
     //높이가 같을 경우: 더 개수가 많은 것으로 대//
     else{
-      if(noNodes(p->left) >= noNodes(p->right)){
-        tmp = maxNodes(p->left); flag =0;
+      if(numNodes(p->left) >= numNodes(p->right)){
+        tmp = maxNode(p->left); flag =0;
       }else{
-        tmp = minNodes(p->right); flag =1;
+        tmp = minNode(p->right); flag =1;
       }
     }
 
